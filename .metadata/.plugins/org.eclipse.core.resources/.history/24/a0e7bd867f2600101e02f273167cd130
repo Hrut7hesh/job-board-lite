@@ -1,0 +1,42 @@
+package com.job.board.controller;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+
+@RestController
+@RequestMapping("/api/upload")
+@CrossOrigin(origins = "*")
+public class LogoUploadController {
+
+    @Value("${upload.logo.path}")
+    private String uploadDir;
+
+    @PostMapping("/logo")
+    public ResponseEntity<String> uploadLogo(@RequestParam("file") MultipartFile file,
+                                             @RequestParam("company") String companyName) {
+        try {
+            String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+            String fileName = companyName.trim().replaceAll("\\s+", "_").toLowerCase() + "." + extension;
+
+            File dir = new File(uploadDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            File dest = new File(dir, fileName);
+            file.transferTo(dest);
+
+            String urlPath = "/logos/" + fileName;
+            return ResponseEntity.ok(urlPath);
+
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("Failed to upload logo");
+        }
+    }
+}

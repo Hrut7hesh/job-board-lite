@@ -1,0 +1,5 @@
+package com.job.board.repo;
+
+public class JobRepository {
+
+}
