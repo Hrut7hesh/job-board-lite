@@ -1,5 +1,0 @@
-package com.job.board.exception;
-
-public class NoJobsFoundException {
-
-}

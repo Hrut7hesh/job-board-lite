@@ -1,8 +1,0 @@
-package com.job.board.repo;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.job.board.dvo.Application;
-
-public interface ApplicationRepository extends JpaRepository<Application, Long> {
-}
